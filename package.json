@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "name": "web-dev-project-server",
+  "version": "1.0.0",
+  "description": "server for web dev project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Danielle Tolliver and Nathanial Ziegler",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3"
+  }
+}
