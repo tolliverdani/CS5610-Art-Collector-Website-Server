@@ -1,7 +1,8 @@
 import axios from 'axios';
 const API_BASE = "https://www.wikiart.org/en/api/2"
-const PAINTINGS_BY_ARTIST_EXT = "/PaintingsByArtist"
+const API_OLD_BASE = "https://www.wikiart.org/en/App"
 const PAINTING_DETAIL_EXT = '/Painting'
+const PAINTINGS_BY_ARTIST_EXT = "/PaintingsByArtist"
 const PAINTING_SEARCH_EXT = '/PaintingSearch'
 const AUTH_INFO = {"accessCode": "7d3507d9d54541eb", "secretCode": "8819363e2b62b70c"}
 const IMAGE_SIZE = 'PinterestSmall'
@@ -11,6 +12,7 @@ const paintingsController = (app) =>{
     app.get('/api/paintings/paintingDetail/:painting_id', findPaintingDetails);
     app.get('/api/paintings/generalSearch/:search_term', paintingGeneralSearch);
     app.get('/api/paintings/artistSearch/:search_term', artistGeneralSearch);
+    app.get('/api/paintings/random', randomPaintings);
 }
 
 const findPaintingsByArtist = async (req, res) => {
@@ -72,6 +74,16 @@ const artistGeneralSearch = async (req, res) => {
             }
         }
         res.send(unique_artists);
+    } else {
+        res.sendStatus(400);
+    }
+}
+
+const randomPaintings = async (req, res) => {
+    const request_url = `${API_OLD_BASE}${PAINTING_DETAIL_EXT}/MostViewedPaintings?randomSeed=123&imageFormat=${IMAGE_SIZE}`;
+    const response = await axios.get(request_url, { headers: AUTH_INFO});
+    if ( response.status === 200 ) {
+        res.send(response.data);
     } else {
         res.sendStatus(400);
     }
