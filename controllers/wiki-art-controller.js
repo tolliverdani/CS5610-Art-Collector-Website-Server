@@ -93,10 +93,10 @@ const artistGeneralSearch = async (req, res) => {
 }
 
 const randomPaintings = async (req, res) => {
-    const request_url = `${API_OLD_BASE}${PAINTING_DETAIL_EXT}/MostViewedPaintings?randomSeed=123&imageFormat=${IMAGE_SIZE}`;
+    const request_url = `${API_BASE}/MostViewedPaintings?imageFormat=${IMAGE_SIZE}`;
     const response = await axios.get(request_url, { headers: AUTH_INFO});
     if ( response.status === 200 ) {
-        res.send(response.data);
+        res.send(response.data.data);
     } else {
         res.sendStatus(400);
     }
