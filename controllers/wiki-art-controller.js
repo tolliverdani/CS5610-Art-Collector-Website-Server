@@ -13,8 +13,9 @@ const paintingsController = (app) =>{
     app.get('/api/paintings/paintingDetail/:painting_id', findPaintingDetails);
     app.get('/api/paintings/generalSearch/:search_term', paintingGeneralSearch);
     app.get('/api/paintings/artistSearch/:search_term', artistGeneralSearch);
+    app.get('/api/artist/:search_term', artistDetails);
     app.get('/api/paintings/random', randomPaintings);
-    app.get('/api/artist/:search_term', artistDetails)
+    app.get('/api/artists/updated', updatedArtists);
 }
 
 const findPaintingsByArtist = async (req, res) => {
@@ -94,6 +95,16 @@ const artistGeneralSearch = async (req, res) => {
 
 const randomPaintings = async (req, res) => {
     const request_url = `${API_BASE}/MostViewedPaintings?imageFormat=${IMAGE_SIZE}`;
+    const response = await axios.get(request_url, { headers: AUTH_INFO});
+    if ( response.status === 200 ) {
+        res.send(response.data.data);
+    } else {
+        res.sendStatus(400);
+    }
+}
+
+const updatedArtists = async (req, res) => {
+    const request_url = `${API_BASE}/UpdatedArtists`;
     const response = await axios.get(request_url, { headers: AUTH_INFO});
     if ( response.status === 200 ) {
         res.send(response.data.data);
