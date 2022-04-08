@@ -1,6 +1,5 @@
 import axios from 'axios';
 const API_BASE = "https://www.wikiart.org/en/api/2"
-const API_OLD_BASE = "https://www.wikiart.org/en/App"
 const API_SHORT = "http://www.wikiart.org/en"
 const PAINTING_DETAIL_EXT = '/Painting'
 const PAINTINGS_BY_ARTIST_EXT = "/PaintingsByArtist"
@@ -14,6 +13,8 @@ const paintingsController = (app) =>{
     app.get('/api/paintings/generalSearch/:search_term', paintingGeneralSearch);
     app.get('/api/paintings/artistSearch/:search_term', artistGeneralSearch);
     app.get('/api/artist/:search_term', artistDetails);
+    app.get('/api/artist/:search_term', artistDetails);
+    app.get('/api/painting/:search_term', paintingDetails);
     app.get('/api/paintings/random', randomPaintings);
     app.get('/api/artists/updated', updatedArtists);
 }
@@ -23,6 +24,17 @@ const findPaintingsByArtist = async (req, res) => {
     const request_url = `${API_BASE}${PAINTINGS_BY_ARTIST_EXT}/?id=${artist_id}&imageFormat=${IMAGE_SIZE}`;
     const response = await axios.get(request_url, { headers: AUTH_INFO});
     if ( response.status === 200 ) {
+        res.send(response.data);
+    } else {
+        res.sendStatus(400);
+    }
+}
+
+const paintingDetails = async (req, res) => {
+    const painting_id = req.params["painting_id"];
+    const request_url = `${API_BASE}${PAINTING_DETAIL_EXT}/?id=${painting_id}`;
+    const response = await axios.get(request_url, {headers: AUTH_INFO});
+    if ( response.status === 200 ){
         res.send(response.data);
     } else {
         res.sendStatus(400);
