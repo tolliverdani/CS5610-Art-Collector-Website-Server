@@ -9,12 +9,10 @@ const IMAGE_SIZE = 'PinterestSmall'
 
 const paintingsController = (app) =>{
     app.get('/api/paintings/byArtist/:artist_id', findPaintingsByArtist);
-    app.get('/api/paintings/paintingDetail/:painting_id', findPaintingDetails);
     app.get('/api/paintings/generalSearch/:search_term', paintingGeneralSearch);
     app.get('/api/paintings/artistSearch/:search_term', artistGeneralSearch);
+    app.get('/api/paintings/paintingDetails/:painting_id', paintingDetails);
     app.get('/api/artist/:search_term', artistDetails);
-    app.get('/api/artist/:search_term', artistDetails);
-    app.get('/api/painting/:search_term', paintingDetails);
     app.get('/api/paintings/random', randomPaintings);
     app.get('/api/artists/updated', updatedArtists);
 }
@@ -31,6 +29,7 @@ const findPaintingsByArtist = async (req, res) => {
 }
 
 const paintingDetails = async (req, res) => {
+    console.log("inside paintingDetails");
     const painting_id = req.params["painting_id"];
     const request_url = `${API_BASE}${PAINTING_DETAIL_EXT}/?id=${painting_id}`;
     const response = await axios.get(request_url, {headers: AUTH_INFO});
