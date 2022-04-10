@@ -15,7 +15,7 @@ app.use(session({
 }));
 
 require("./controllers/users-controller")(app);
-require("./controllers/collection-controller")(app);
+//require("./controllers/collection-controller")(app);
 require("./controllers/comments-controller")(app);
 require("./controllers/wiki-art-controller")(app);
 
