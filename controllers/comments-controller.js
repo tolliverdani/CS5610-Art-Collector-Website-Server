@@ -1,4 +1,4 @@
-const commentsDao = require('../../database/tuits/tuits-dao');
+const commentsDao = require('../../database/comments/comments-dao');
 let comments = require('./comments.json'); // TODO: replace with Mongo
 
 const findAllComments = async (req, res) => {

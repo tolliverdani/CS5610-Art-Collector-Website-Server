@@ -1,18 +1,18 @@
 const collectionDao = require('../../database/collection/collection-dao');
-let collection = require('./collection.json'); // TODO: replace with Mongo
+/*let collection = require('./collection.json'); // TODO: replace with Mongo
 
-const findAllComments = async (req, res) => {
-    const comments = await commentsDao.findAllComments();
-    res.json(comments);
+const findAllInCollection = async (req, res) => {
+    const collection = await collectionDao.findAllInCollection();
+    res.json(collection);
 }
 
-const createComment = async (req, res) => {
-    const newComment = req.body;
+const createCollection = async (req, res) => {
+    const addition = req.body;
     // in the undergrad lecture the prof added the comment
     // and then returned the whole list back like below
-    await commentsDao.createComment(newComment);
-    const comments = await commentsDao.findAllComments();
-    res.json(comments);
+    await collectionDao.createCollection(addition);
+    const collections = await collectionDao.findAllCollections();
+    res.json(collections);
 }
 
 const addToCollection = (req, res) => {
@@ -31,13 +31,19 @@ const getCollection = (req, res) => {
     res.json(collection);
 }
 
-const clearCollection = (req, res) => {
-    req.session['collection'] = [];
-    res.sendStatus(200);
+const deleteFromCollection = async (req, res) => {
+    const collection_id = req.params['collection_id'];
+    // in the undergrad lecture the prof deleted the comment
+    // and then returned the whole list back like below
+    await collectionDao.deleteComment(collection_id);
+    const collection = await collectionDao.findAllComments();
+    res.json(collection);
 }
 
 module.exports = (app) => {
-    app.get('/api/collection/add/:painting_id', addToCollection);
+    app.get('/api/collection/', findAllInCollection);
     app.get('/api/collection/get', getCollection);
-    app.get('/api/collection/clear', clearCollection);
-}
+    app.post('/api/collection/', createCollection);
+    app.get('/api/collection/add/:painting_id', addToCollection);
+    app.get('/api/collection/clear', deleteFromCollection);
+}/* *///

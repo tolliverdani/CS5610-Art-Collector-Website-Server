@@ -1,6 +1,6 @@
 const collectionModel = require('./users-model.js')
 
-const findAllCollections = () => collectionModel.find()
+const findAllInCollection = () => collectionModel.find()
 
 const findCollectionById = (user_id) => collectionModel.findById(user_id)
 
@@ -13,7 +13,7 @@ const updateCollection = (user_id, collection) => collectionModel.updateOne(
     {$set: collection})
 
 module.exports = {
-    findAllCollections,
+    findAllInCollection,
     findCollectionById,
     createCollection,
     deleteCollection,

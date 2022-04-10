@@ -4,7 +4,8 @@ const session = require('express-session');
 const cors = require('cors');
 const app = express();
 
-mongoose.connect('mongodb+srv://web-dev-project-admin:MkroyLHYmYn0o6GQ@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
+mongoose.connect(CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
