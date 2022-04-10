@@ -1,5 +1,14 @@
-const commentsDao = require('../../database/comments/comments-dao');
-let comments = require('./comments.json'); // TODO: replace with Mongo
+import commentsDao from "../database/comments/comments-dao.js";
+//let comments = require('./comments.json'); // TODO: replace with Mongo
+
+const commentsController = (app) => {
+    app.get('/api/comment', findAllComments);
+    app.post('/api/comment', createComment);
+    app.put('/api/tuits/:tid/like', likeComment);
+    app.put('/api/tuits/:tid/unlike', unlikeComment);
+    app.put('/api/comment/:comment_id', updateComment);
+    app.delete('/api/comment/:comment_id', deleteComment);
+}
 
 const findAllComments = async (req, res) => {
     const comments = await commentsDao.findAllComments();
@@ -53,11 +62,4 @@ const deleteComment = async (req, res) => {
     res.json(comments);
 }
 
-module.exports = (app) => {
-    app.get('/api/comment', findAllComments);
-    app.post('/api/comment', createComment);
-    app.put('/api/tuits/:tid/like', likeComment);
-    app.put('/api/tuits/:tid/unlike', unlikeComment);
-    app.put('/api/comment/:comment_id', updateComment);
-    app.delete('/api/comment/:comment_id', deleteComment);
-}
+export default commentsController;

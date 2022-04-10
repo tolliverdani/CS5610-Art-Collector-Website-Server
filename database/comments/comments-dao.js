@@ -1,4 +1,4 @@
-const commentsModel = require('./comments-model');
+import commentsModel from "./comments-model.js";
 
 const findAllComments = async () => {
     return await commentsModel.find();
@@ -22,6 +22,6 @@ const updateComment = async (comment_id, comment) => {
         {$set: comment});
 }
 
-module.exports = {
+export default {
     findAllComments, findCommentById, createComment, deleteComment, updateComment
 }

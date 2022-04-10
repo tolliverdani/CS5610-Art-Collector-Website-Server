@@ -1,4 +1,4 @@
-const collectionDao = require('../../database/collection/collection-dao');
+import collectionDao from "/database/collection/collection-dao";
 /*let collection = require('./collection.json'); // TODO: replace with Mongo
 
 const findAllInCollection = async (req, res) => {

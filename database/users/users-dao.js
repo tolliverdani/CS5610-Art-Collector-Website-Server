@@ -1,4 +1,4 @@
-const userModel = require('./users-model.js')
+import userModel from "./users-model.js";
 
 const findAllUsers = () => userModel.find()
 
@@ -16,7 +16,7 @@ const updateUser = (id, user) => userModel.updateOne(
     {_id: id},
     {$set: user})
 
-module.exports = {
+export default {
     findAllUsers, findUserById,
     findUserByEmail, findUserByCredentials,
     createUser, deleteUser, updateUser

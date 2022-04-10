@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+
 const commentsSchema = mongoose.Schema(
     {
         username: String,
@@ -7,4 +8,5 @@ const commentsSchema = mongoose.Schema(
         likes: {type: Number, default: 0}
     },
     {collection: 'comments'});
-module.exports = commentsSchema;
+
+export default commentsSchema;

@@ -1,4 +1,4 @@
-const collectionModel = require('./users-model.js')
+import collectionModel from "./collection-model.js";
 
 const findAllInCollection = () => collectionModel.find()
 
@@ -12,7 +12,7 @@ const updateCollection = (user_id, collection) => collectionModel.updateOne(
     {_id: user_id},
     {$set: collection})
 
-module.exports = {
+export default {
     findAllInCollection,
     findCollectionById,
     createCollection,

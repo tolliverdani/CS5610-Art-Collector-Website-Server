@@ -1,6 +1,9 @@
-const mongoose = require('mongoose')
-const collectionSchema = require('./collection-schema')
+import mongoose from "mongoose";
+import collectionSchema from "./collection-schema.js";
+
 const collectionModel = mongoose.model(
     'CollectionModel',
-    collectionSchema)
-module.exports = collectionModel
+    collectionSchema
+);
+
+export default collectionModel;

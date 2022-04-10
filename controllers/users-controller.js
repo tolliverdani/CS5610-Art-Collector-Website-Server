@@ -1,6 +1,15 @@
-const userDao = require('../database/users/users-dao');
-let users = require('./users.json'); // TODO: replace with Mongo
+import userDao from "../database/users/users-dao.js";
+//let users = require('./users.json'); // TODO: replace with Mongo
 
+const usersController = (app) => {
+    app.get('/api/users', findAllUsers);
+    app.get('/api/users/:id', findUserById);
+    app.get('/api/users/email/:email', findUserByEmail);
+    app.post('/api/users/credentials', findUserByCredentials);
+    app.post('/api/users', createUser);
+    app.put('/api/users/:id', updateUser);
+    app.delete('/api/users/:id', deleteUser);
+}
 
 const findAllUsers = async (req, res) => {
     const users = await userDao.findAllUsers()
@@ -60,12 +69,4 @@ const deleteUser = async (req, res) => {
     res.json(status)
 }
 
-module.exports = (app) => {
-    app.get('/api/users', findAllUsers);
-    app.get('/api/users/:id', findUserById);
-    app.get('/api/users/email/:email', findUserByEmail);
-    app.post('/api/users/credentials', findUserByCredentials);
-    app.post('/api/users', createUser);
-    app.put('/api/users/:id', updateUser);
-    app.delete('/api/users/:id', deleteUser);
-}
+export default usersController;

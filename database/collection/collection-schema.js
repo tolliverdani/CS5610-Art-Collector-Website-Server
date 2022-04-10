@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
+
 const collectionSchema = mongoose.Schema(
     // TODO: confirm that these are the fields we want to track for this
     {
@@ -9,4 +10,5 @@ const collectionSchema = mongoose.Schema(
         username: String
     },
     {collection: "users"})
-module.exports = collectionSchema
+
+export default collectionSchema;
