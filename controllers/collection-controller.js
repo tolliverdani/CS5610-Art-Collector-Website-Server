@@ -1,3 +1,20 @@
+const collectionDao = require('../../database/collection/collection-dao');
+let collection = require('./collection.json'); // TODO: replace with Mongo
+
+const findAllComments = async (req, res) => {
+    const comments = await commentsDao.findAllComments();
+    res.json(comments);
+}
+
+const createComment = async (req, res) => {
+    const newComment = req.body;
+    // in the undergrad lecture the prof added the comment
+    // and then returned the whole list back like below
+    await commentsDao.createComment(newComment);
+    const comments = await commentsDao.findAllComments();
+    res.json(comments);
+}
+
 const addToCollection = (req, res) => {
     let collection = req.session['collection'];
     if(!collection) {

@@ -4,7 +4,7 @@ const session = require('express-session');
 const cors = require('cors');
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/webdev');
+mongoose.connect('mongodb+srv://web-dev-project-admin:MkroyLHYmYn0o6GQ@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
 app.use(cors());
 app.use(express.json());
@@ -14,9 +14,8 @@ app.use(session({
 }));
 
 require("./controllers/users-controller")(app);
-require("./controllers/auth-controller")(app);
-require("./controllers/wiki-art-controller")(app);
 require("./controllers/collection-controller")(app);
 require("./controllers/comments-controller")(app);
+require("./controllers/wiki-art-controller")(app);
 
 app.listen(process.env.PORT || 4000);

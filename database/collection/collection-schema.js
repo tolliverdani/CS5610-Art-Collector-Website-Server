@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const usersSchema = mongoose.Schema(
+const collectionSchema = mongoose.Schema(
+    // TODO: confirm that these are the fields we want to track for this
     {
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
@@ -8,4 +9,4 @@ const usersSchema = mongoose.Schema(
         username: String
     },
     {collection: "users"})
-module.exports = usersSchema
+module.exports = collectionSchema

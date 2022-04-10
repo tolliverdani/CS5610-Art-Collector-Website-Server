@@ -10,13 +10,14 @@ const findUserByCredentials = (email, password) => userModel.findOne({email, pas
 
 const createUser = (user) => userModel.create(user)
 
+const deleteUser = (id) => userModel.deleteOne({_id: id})
+
 const updateUser = (id, user) => userModel.updateOne(
     {_id: id},
     {$set: user})
 
-const deleteUser = (id) => userModel.deleteOne({_id: id})
-
 module.exports = {
-    findUserByEmail, findAllUsers, findUserByCredentials,
-    findUserById, createUser, deleteUser, updateUser
+    findAllUsers, findUserById,
+    findUserByEmail, findUserByCredentials,
+    createUser, deleteUser, updateUser
 }
