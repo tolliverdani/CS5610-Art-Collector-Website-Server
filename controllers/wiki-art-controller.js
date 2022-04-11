@@ -33,7 +33,6 @@ const findPaintingsByArtist = async (req, res) => {
 }
 
 const paintingDetails = async (req, res) => {
-    console.log("inside paintingDetails");
     const painting_id = req.params["painting_id"];
     const request_url = `${API_BASE}${PAINTING_DETAIL_EXT}/?id=${painting_id}`;
     const response = await axios.get(request_url, {headers: AUTH_INFO});
@@ -67,11 +66,12 @@ const paintingGeneralSearch = async (req, res) => {
 }
 
 const artistDetails = async (req, res) => {
+    console.log("in artist details")
     const search_term = req.params['search_term'];
     const request_url = `${API_SHORT}/${search_term}?json=2`;
-    const response = await axios.get(request_url, {headers: AUTH_INFO})
+    const response = await axios.get(request_url)
     if (response.status === 200) {
-        res.send(response.data.data);
+        res.send(response.data);
     } else {
         res.sendStatus(400);
     }

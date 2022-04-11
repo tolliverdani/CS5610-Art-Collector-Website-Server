@@ -9,7 +9,7 @@ import CommentsController from "./controllers/comments-controller.js";
 import WikiArtController from "./controllers/wiki-art-controller.js";
 const app = express();
 
-const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
+const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING || "mongodb+srv://web-dev-project-admin:uxp4pxn-WHF5zge0pcg@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors());
