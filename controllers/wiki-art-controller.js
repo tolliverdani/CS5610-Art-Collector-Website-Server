@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {request} from "express";
 
 const API_BASE = "https://www.wikiart.org/en/api/2"
 const API_SHORT = "http://www.wikiart.org/en"
@@ -12,7 +13,8 @@ const AUTH_INFO = {
 const IMAGE_SIZE = 'PinterestSmall'
 
 const paintingsController = (app) => {
-    app.get('/api/paintings/byArtist/:artist_id', findPaintingsByArtist);
+    app.get('/api/paintings/byArtist/:artist_id/', findPaintingsByArtist);
+    app.get('/api/paintings/byArtist/:artist_id/:pagination_token', findPaintingsByArtist);
     app.get('/api/paintings/generalSearch/:search_term', paintingGeneralSearch);
     app.get('/api/paintings/artistSearch/:search_term', artistGeneralSearch);
     app.get('/api/paintings/paintingDetails/:painting_id', paintingDetails);
@@ -22,10 +24,25 @@ const paintingsController = (app) => {
 }
 
 const findPaintingsByArtist = async (req, res) => {
+
+    // standard URL
     const artist_id = req.params["artist_id"];
-    const request_url = `${API_BASE}${PAINTINGS_BY_ARTIST_EXT}/?id=${artist_id}&imageFormat=${IMAGE_SIZE}`;
+    let request_url = `${API_BASE}${PAINTINGS_BY_ARTIST_EXT}/?id=${artist_id}&imageFormat=${IMAGE_SIZE}`;
+
+    // if this was called with the api having a pagination token, add it to string
+    if ( req.params.hasOwnProperty('pagination_token') ){
+
+        // because the pagination token uses characters that express things should be treated as escaped characters, must encode
+        let pagination_token = req.params['pagination_token'];
+        pagination_token = encodeURIComponent(pagination_token);
+
+        request_url = request_url + `&paginationToken=${pagination_token}`;
+    }
     const response = await axios.get(request_url, {headers: AUTH_INFO});
+
     if (response.status === 200) {
+
+        // now sending the entire object, because the client needs the pagination_token and hasMore bool
         res.send(response.data);
     } else {
         res.sendStatus(400);
@@ -59,7 +76,7 @@ const paintingGeneralSearch = async (req, res) => {
     const request_url = `${API_BASE}${PAINTING_SEARCH_EXT}/?term=${search_term}`;
     const response = await axios.get(request_url, {headers: AUTH_INFO});
     if (response.status === 200) {
-        res.json(response.data.data);
+        res.json(response.data);
     } else {
         res.sendStatus(400);
     }
@@ -115,7 +132,7 @@ const randomPaintings = async (req, res) => {
     const request_url = `${API_BASE}/MostViewedPaintings?imageFormat=${IMAGE_SIZE}`;
     const response = await axios.get(request_url, {headers: AUTH_INFO});
     if (response.status === 200) {
-        res.send(response.data.data);
+        res.send(response.data);
     } else {
         res.sendStatus(400);
     }
@@ -125,7 +142,7 @@ const updatedArtists = async (req, res) => {
     const request_url = `${API_BASE}/UpdatedArtists`;
     const response = await axios.get(request_url, {headers: AUTH_INFO});
     if (response.status === 200) {
-        res.send(response.data.data);
+        res.send(response.data);
     } else {
         res.sendStatus(400);
     }
