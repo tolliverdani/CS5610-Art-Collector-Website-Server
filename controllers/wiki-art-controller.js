@@ -86,10 +86,14 @@ const artistDetails = async (req, res) => {
     console.log("in artist details")
     const search_term = req.params['search_term'];
     const request_url = `${API_SHORT}/${search_term}?json=2`;
-    const response = await axios.get(request_url)
-    if (response.status === 200) {
-        res.send(response.data);
-    } else {
+    try {
+        const response = await axios.get(request_url)
+        if (response.status === 200) {
+            res.send(response.data);
+        } else {
+            res.sendStatus(400);
+        }
+    } catch (e){
         res.sendStatus(400);
     }
 }
