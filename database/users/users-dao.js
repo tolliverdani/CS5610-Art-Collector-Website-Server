@@ -14,7 +14,8 @@ const deleteUser = (id) => userModel.deleteOne({_id: id})
 
 const updateUser = (id, user) => userModel.updateOne(
     {_id: id},
-    {$set: user})
+    {$set: user}
+)
 
 export default {
     findAllUsers, findUserById,

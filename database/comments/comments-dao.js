@@ -1,27 +1,17 @@
 import commentsModel from "./comments-model.js";
 
-const findAllComments = async () => {
-    return await commentsModel.find();
-}
-
-const findCommentById = async (comment_id) => {
-    return await commentsModel.findById(comment_id)
-}
-
-const createComment = async (comment) => {
-    return await commentsModel.create(comment);
-}
-
-const deleteComment = async (comment_id) => {
-    return await commentsModel.deleteOne({_id: comment_id});
-}
-
-const updateComment = async (comment_id, comment) => {
-    return await commentsModel.updateOne(
-        {_id: comment_id},
-        {$set: comment});
-}
+const findAllComments = () => commentsModel.find();
+const findAllCommentsByPaintingId = (painting_id) => commentsModel.find(painting_id);
+const findCommentById = (comment_id) => commentsModel.findById(comment_id)
+const createComment = (comment) => commentsModel.create(comment);
+const deleteComment = (comment_id) => commentsModel.deleteOne({_id: comment_id});
+const updateComment = (comment_id, comment) => commentsModel.updateOne({_id: comment_id}, {$set: comment});
 
 export default {
-    findAllComments, findCommentById, createComment, deleteComment, updateComment
+    findAllComments,
+    findAllCommentsByPaintingId,
+    findCommentById,
+    createComment,
+    deleteComment,
+    updateComment
 }

@@ -38,8 +38,6 @@ const likeComment = async (req, res) => {
 const unlikeComment = async (req, res) => {
     const comment_id = req.params['comment_id'];
     let comment = await commentsDao.findCommentById(comment_id)
-    // in the undergrad lecture the prof unliked the comment,
-    // updated list, and then returned the whole list back like below
     comment.likes--;
     await commentsDao.updateComment(comment_id, comment)
     const comments = commentsDao.findAllComments()
@@ -50,7 +48,9 @@ const updateComment = async (req, res) => {
     const comment_id = req.params['comment_id'];
     const updatedComment = req.body;
     const status = commentsDao.updateComment(comment_id, updatedComment);
-    res.sendStatus(status);
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    }
 }
 
 const deleteComment = async (req, res) => {
@@ -58,8 +58,10 @@ const deleteComment = async (req, res) => {
     // in the undergrad lecture the prof deleted the comment
     // and then returned the whole list back like below
     await commentsDao.deleteComment(comment_id);
-    const comments = await commentsDao.findAllComments();
-    res.json(comments);
+    const status = await commentsDao.findAllComments();
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    }
 }
 
 export default commentsController;

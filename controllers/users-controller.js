@@ -49,6 +49,9 @@ const findUserByCredentials = async (req, res) => {
 
 const createUser = async (req, res) => {
     const user = req.body
+    user.joined = Date.now()
+    user.ratings = []
+    user. collection = []
     const insertedUser = await userDao.createUser(user)
     res.json(insertedUser)
 }
@@ -60,13 +63,17 @@ const updateUser = async (req, res) => {
         userId,
         user
     )
-    res.json(status)
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    }
 }
 
 const deleteUser = async (req, res) => {
     const userId = req.params['id']
     const status = await userDao.deleteUser(userId)
-    res.json(status)
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    }
 }
 
 export default usersController;
