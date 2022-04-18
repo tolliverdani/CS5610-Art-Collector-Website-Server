@@ -55,6 +55,7 @@ const createUser = async (req, res) => {
     res.json(insertedUser)
 }
 
+// TODO: do we need to do anything with collection here?
 const updateUser = async (req, res) => {
     const user = req.body
     const userId = req.params['id']
@@ -69,8 +70,11 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const userId = req.params['id']
-    const status = await userDao.deleteUser(userId)
-    if (status.acknowledged === true) {
+    const user = findUserById(userId)
+    // must delete the collection from the user when deleting a user
+    const status_collection = await collectionDao.deleteCollection(user.collection_id)
+    const status_user = await userDao.deleteUser(userId)
+    if (status_collection.acknowledged === true && status_user === true) {
         res.sendStatus(200)
     }
 }
