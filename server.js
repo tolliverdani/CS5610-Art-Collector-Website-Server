@@ -17,28 +17,18 @@ mongoose.connect(CONNECTION_STRING);
 app.use(cors());
 app.use(express.json());
 app.set('trust proxy', 1);
+
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // needs HTTPS
+    cookie: { secure: false } // needs HTTPS
 }));
 
-let sess = {
-    secret: SECRET,
-    cookie: { secure: false }
-};
-
-if (process.env.ENV === 'production') {
-    app.set('trust proxy', 1)
-    sess.cookie.secure = true;
-}
-
-
 UsersController(app);
-//CollectionController(app);
 CommentsController(app);
 WikiArtController(app);
 SessionController(app);
+//CollectionController(app);
 
 app.listen(process.env.PORT || 4000);

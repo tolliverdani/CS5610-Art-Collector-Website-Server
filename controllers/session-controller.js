@@ -7,8 +7,7 @@ const SessionController = (app) => {
 
 const setSession = (req, res) => {
     const name = req.params['name'];
-    const value = req.params['value'];
-    req.session[name] = value;
+    req.session[name] = req.params['value'];
     res.send(req.session);
 }
 
@@ -26,6 +25,5 @@ const resetSession = (req, res) => {
     req.session.destroy();
     res.send(200);
 }
-
 
 export default SessionController;
