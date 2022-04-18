@@ -9,7 +9,7 @@ const usersSchema = mongoose.Schema({
     password: {type: String, required: true},
     joined: {type: Date, default: Date.now},
     rating: {type: Number, default: 0},
-    collection_id: String,
+    collection_id: String, // automatically created when user is created
 }, {collection: "users"})
 
 export default usersSchema;

@@ -1,5 +1,4 @@
 import collectionDao from "/database/collection/collection-dao";
-/*let collection = require('./collection.json'); // TODO: replace with Mongo
 
 const findAllInCollection = async (req, res) => {
     const collection = await collectionDao.findAllInCollection();
@@ -7,12 +6,9 @@ const findAllInCollection = async (req, res) => {
 }
 
 const createCollection = async (req, res) => {
-    const addition = req.body;
-    // in the undergrad lecture the prof added the comment
-    // and then returned the whole list back like below
-    await collectionDao.createCollection(addition);
-    const collections = await collectionDao.findAllCollections();
-    res.json(collections);
+    const collection = req.body;
+    const status = await collectionDao.createCollection(collection);
+    res.send(status);
 }
 
 const addToCollection = (req, res) => {

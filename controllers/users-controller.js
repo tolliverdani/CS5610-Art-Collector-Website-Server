@@ -1,5 +1,5 @@
 import userDao from "../database/users/users-dao.js";
-//let users = require('./users.json'); // TODO: replace with Mongo
+import collectionDao from "../database/collection/collection-dao.js";
 
 const usersController = (app) => {
     app.get('/api/users', findAllUsers);
@@ -49,8 +49,8 @@ const findUserByCredentials = async (req, res) => {
 
 const createUser = async (req, res) => {
     const user = req.body
-    user.ratings = []
-    user.collection = []
+    const collection = await collectionDao.createCollection()
+    user.collection_id = collection._id
     const insertedUser = await userDao.createUser(user)
     res.json(insertedUser)
 }
