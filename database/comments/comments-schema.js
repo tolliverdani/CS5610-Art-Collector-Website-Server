@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 
+// https://mongoosejs.com/docs/schematypes.html
+
 const commentsSchema = mongoose.Schema({
-    "user_id": String,
+    // comment_id created by database
+    user_id: String,
     username: String,
     comment: String,
-    date: {type: Date, default: Date.now()},
+    post_date: {type: Date, default: Date.now()},
     likes: {type: Number, default: 0}
 }, {collection: 'comments'});
 

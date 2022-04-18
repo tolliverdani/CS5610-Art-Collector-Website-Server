@@ -49,9 +49,8 @@ const findUserByCredentials = async (req, res) => {
 
 const createUser = async (req, res) => {
     const user = req.body
-    user.joined = Date.now()
     user.ratings = []
-    user. collection = []
+    user.collection = []
     const insertedUser = await userDao.createUser(user)
     res.json(insertedUser)
 }

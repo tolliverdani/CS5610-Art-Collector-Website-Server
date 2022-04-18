@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
+// https://mongoosejs.com/docs/schematypes.html
+
+//TODO: I want the collection to be created when a user account is created
 const collectionSchema = mongoose.Schema({
-    // TODO: confirm that these are the fields we want to track for this
-    //  Should this automatically be created with a user and get linked?
-    //  Or should we keep this data under the user?
+    // collection_id created by database
     user_id: String,
-    username: {type: String, required: true},
-    paintings: {type: [String], default: []},
+    contents:
+        {
+            "painting_id": String,
+            status: {type: String, enum: ['public, private']}
+        }
 }, {collection: "collection"})
 
 export default collectionSchema;
