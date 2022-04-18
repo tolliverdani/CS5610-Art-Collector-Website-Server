@@ -1,16 +1,60 @@
 import userDao from "../database/users/users-dao.js";
 import collectionDao from "../database/collection/collection-dao.js";
+import express from "express";
 
 const usersController = (app) => {
+    app.use(express.json());
+
+    app.post("/api/auth/login", login);
+    app.post("/api/auth/signup", signup);
+    app.post("/api/auth/profile", profile);
+    app.post("/api/auth/logout", logout);
+
     app.get('/api/users', findAllUsers);
     app.get('/api/users/:id', findUserById);
     app.get('/api/users/email/:email', findUserByEmail);
-    app.post('/api/users/credentials', findUserByCredentials);
-    app.post('/api/users', createUser);
+    //app.post('/api/users/credentials', findUserByCredentials);
     app.put('/api/users/:id', updateUser);
     app.delete('/api/users/:id', deleteUser);
 }
 
+/* user auth controls */
+const signup = async (req, res) => {
+    const user = req.body;
+    const existingUser = await userDao.findUserByEmail(user.email);
+    if (existingUser) {
+        res.sendStatus(403)
+    } else {
+        const insertedUser = await userDao.createUser(user);
+        insertedUser.password = '';
+        req.session['profile'] = insertedUser;
+        res.json(insertedUser);
+    }
+}
+
+const login = async (req, res) => {
+    const user = req.body;
+    const existingUser = await userDao.findUserByCredentials(user.email, user.password);
+    if (existingUser) {
+        existingUser.password = '';
+        req.session['profile'] = existingUser;
+        res.json(existingUser);
+    } else {
+        res.sendStatus(403);
+    }
+}
+
+
+const logout = (req, res) => {
+    req.session.destroy();
+    res.sendStatus(200);
+}
+
+const profile = (req, res) => {
+    res.json(req.session['profile']);
+}
+
+/* user-db connection controls */
 const findAllUsers = async (req, res) => {
     const users = await userDao.findAllUsers()
     res.json(users)
@@ -45,14 +89,6 @@ const findUserByCredentials = async (req, res) => {
     } else {
         res.sendStatus(403)
     }
-}
-
-const createUser = async (req, res) => {
-    const user = req.body
-    const collection = await collectionDao.createCollection()
-    user.collection_id = collection._id
-    const insertedUser = await userDao.createUser(user)
-    res.json(insertedUser)
 }
 
 // TODO: do we need to do anything with collection here?

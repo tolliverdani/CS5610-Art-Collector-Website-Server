@@ -7,6 +7,7 @@ import UsersController from "./controllers/users-controller.js";
 //import CollectionController from "./controllers/collection-controller.js";
 import CommentsController from "./controllers/comments-controller.js";
 import WikiArtController from "./controllers/wiki-art-controller.js";
+import SessionController from "./controllers/session-controller.js";
 const app = express();
 
 const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING ||
@@ -15,16 +16,29 @@ mongoose.connect(CONNECTION_STRING);
 
 app.use(cors());
 app.use(express.json());
+app.set('trust proxy', 1);
 app.use(session({
-    secret: 'SECRET',
-    cookie: {secure: false},
-    resave: true,
-    saveUninitialized: true
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true } // needs HTTPS
 }));
+
+let sess = {
+    secret: SECRET,
+    cookie: { secure: false }
+};
+
+if (process.env.ENV === 'production') {
+    app.set('trust proxy', 1)
+    sess.cookie.secure = true;
+}
+
 
 UsersController(app);
 //CollectionController(app);
 CommentsController(app);
 WikiArtController(app);
+SessionController(app);
 
 app.listen(process.env.PORT || 4000);
