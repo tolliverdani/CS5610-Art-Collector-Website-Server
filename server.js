@@ -18,9 +18,18 @@ app.use(cors());
 app.use(express.json());
 app.set('trust proxy', 1);
 
+// https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
+// ^^ explains these variables
 app.use(session({
-    secret: process.env.SECRET,
+
+    // I believe this is just to encrypt data
+    secret: process.env.SECRET_KEY || "super secret key",
+
+    // according to GFG, setting this to true "forces the session to be saved back to the session store
+    // changing this from true (the default) to false can help prevent race situations
     resave: false,
+
+    // accoding to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
     cookie: { secure: false } // needs HTTPS
 }));

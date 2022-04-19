@@ -20,10 +20,17 @@ const usersController = (app) => {
 
 /* user auth controls */
 const signup = async (req, res) => {
+    // retrieve contents of the body
     const user = req.body;
+
+    // check to see if they are an existing user based on email in mongo
     const existingUser = await userDao.findUserByEmail(user.email);
+
+    // if they are an existing user, return 403
     if (existingUser) {
         res.sendStatus(403)
+
+        // otherwise, insert user in mongo, set the password to blank
     } else {
         const insertedUser = await userDao.createUser(user);
         insertedUser.password = '';
