@@ -8,13 +8,18 @@ import UsersController from "./controllers/users-controller.js";
 import CommentsController from "./controllers/comments-controller.js";
 import WikiArtController from "./controllers/wiki-art-controller.js";
 import SessionController from "./controllers/session-controller.js";
+import AuthController from "./controllers/auth-controller.js";
 const app = express();
 
 const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING ||
     "mongodb+srv://web-dev-project-admin:uxp4pxn-WHF5zge0pcg@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 mongoose.connect(CONNECTION_STRING);
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
 app.use(express.json());
 app.set('trust proxy', 1);
 
@@ -29,7 +34,7 @@ app.use(session({
     // changing this from true (the default) to false can help prevent race situations
     resave: false,
 
-    // accoding to GFG, this forces a session that is "uninitialized" to be saved to the store
+    // according to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
     cookie: { secure: false } // needs HTTPS
 }));
@@ -38,6 +43,7 @@ UsersController(app);
 CommentsController(app);
 WikiArtController(app);
 SessionController(app);
+AuthController(app);
 //CollectionController(app);
 
 app.listen(process.env.PORT || 4000);
