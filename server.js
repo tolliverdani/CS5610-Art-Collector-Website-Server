@@ -9,6 +9,7 @@ import CommentsController from "./controllers/comments-controller.js";
 import WikiArtController from "./controllers/wiki-art-controller.js";
 import SessionController from "./controllers/session-controller.js";
 import AuthController from "./controllers/auth-controller.js";
+import CollectionsController from "./controllers/collection-controller.js";
 const app = express();
 
 const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING ||
@@ -44,6 +45,6 @@ CommentsController(app);
 WikiArtController(app);
 SessionController(app);
 AuthController(app);
-//CollectionController(app);
+CollectionsController(app);
 
 app.listen(process.env.PORT || 4000);

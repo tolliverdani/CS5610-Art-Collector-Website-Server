@@ -1,4 +1,4 @@
-import collectionDao from "/database/collection/collection-dao";
+import collectionDao from "../database/collection/collection-dao.js"
 
 const findAllInCollection = async (req, res) => {
     const collection = await collectionDao.findAllInCollection();
@@ -36,10 +36,38 @@ const deleteFromCollection = async (req, res) => {
     res.json(collection);
 }
 
-module.exports = (app) => {
+const updateCollection = async (req, res) => {
+    console.log("in update collection");
+    const body = req.body;
+    const _id = req.body._id;
+    const status = await collectionDao.updateCollection(_id, body);
+    console.log(status);
+    if ( status["modifiedCount"] === 1 ){
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(400);
+    }
+}
+
+const findUserCollection = async (req, res) => {
+    const user_id = req.params['user_id'];
+    const collection = await collectionDao.findCollectionById(user_id)
+    if ( collection ){
+        res.json(collection);
+    } else {
+        res.sendStatus(404);
+    }
+}
+
+// TODO, I don't think these should all be get?
+const CollectionsController = (app) => {
     app.get('/api/collection/', findAllInCollection);
+    app.get('/api/collection/:user_id', findUserCollection);
     app.get('/api/collection/get', getCollection);
     app.post('/api/collection/', createCollection);
     app.get('/api/collection/add/:painting_id', addToCollection);
     app.get('/api/collection/clear', deleteFromCollection);
-}/* *///
+    app.put('/api/collection', updateCollection);
+}
+
+export default CollectionsController;

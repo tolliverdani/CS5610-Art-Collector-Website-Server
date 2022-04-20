@@ -1,5 +1,6 @@
 import userDao from "../database/users/users-dao.js";
 import express from "express";
+import collectionDao from "../database/collection/collection-dao.js";
 
 const authController = (app) => {
     app.use(express.json());
@@ -22,11 +23,28 @@ const signup = async (req, res) => {
     if (existingUser) {
         res.sendStatus(403)
 
-        // otherwise, insert user in mongo, set the password to blank
+        // otherwise, insert user in mongo
+        // at the same time, create a collection for that user
     } else {
         const insertedUser = await userDao.createUser(user);
         insertedUser.password = '';
         req.session['profile'] = insertedUser;
+
+        // check to see if the user already has a collection, which they shouldn't
+        const exisitingCollection = await collectionDao.findCollectionById(insertedUser._id);
+
+        // if they do, return an error
+        if ( exisitingCollection ) {
+            res.sendStatus(403);
+        } else {
+
+            console.log(`creating a new collection for user with id: ${insertedUser._id}`)
+
+            // if not, add their collection
+            const newCollection = await collectionDao.createCollection({user_id: insertedUser._id})
+            console.log(newCollection);
+        }
+
         res.json(insertedUser);
     }
 }
