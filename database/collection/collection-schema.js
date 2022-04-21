@@ -14,8 +14,7 @@ const collectionSchema = mongoose.Schema({
             "artistId": String,
             "image": String,
             "completionYear": Number,
-            status: {type: String, enum: ['public, private']}
-
+            status: {type: String, enum: ['public', 'private']}
         }]
 }, {collection: "collection"})
 

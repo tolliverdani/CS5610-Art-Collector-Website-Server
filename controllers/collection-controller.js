@@ -53,10 +53,10 @@ const findUserCollection = async (req, res) => {
     const user_id = req.params['user_id'];
     const collection = await collectionDao.findCollectionById(user_id)
     if ( collection ){
-        res.json(collection);
+        res.json(collection.contents);
     } else {
         res.sendStatus(404);
-    }
+    }g
 }
 
 // TODO, I don't think these should all be get?
@@ -65,8 +65,8 @@ const CollectionsController = (app) => {
     app.get('/api/collection/:user_id', findUserCollection);
     app.get('/api/collection/get', getCollection);
     app.post('/api/collection/', createCollection);
-    app.get('/api/collection/add/:painting_id', addToCollection);
-    app.get('/api/collection/clear', deleteFromCollection);
+    app.post('/api/collection/add/:painting_id', addToCollection);
+    app.delete('/api/collection/clear', deleteFromCollection);
     app.put('/api/collection', updateCollection);
 }
 
