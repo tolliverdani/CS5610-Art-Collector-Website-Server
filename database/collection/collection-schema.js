@@ -9,6 +9,11 @@ const collectionSchema = mongoose.Schema({
     contents:
         [{
             "painting_id": String,
+            "title": String,
+            "artistName": String,
+            "artistId": String,
+            "image": String,
+            "completionYear": Number,
             status: {type: String, enum: ['public, private']}
 
         }]
