@@ -8,8 +8,10 @@ const collectionSchema = mongoose.Schema({
     user_id: {type: String, required: true, unique: true},
     contents:
         [{
-            "painting_id": String,
+            "id": String,
             "title": String,
+            "url": String,
+            "artistUrl": String,
             "artistName": String,
             "artistId": String,
             "image": String,
