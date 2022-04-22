@@ -2,14 +2,42 @@ import transactionDao from "../database/transactions/transactions-dao.js";
 //let comments = require('./comments.json'); // TODO: replace with Mongo
 
 const transactionsController = (app) => {
-    app.get('/api/comment', findAllTransactions);
-    app.post('/api/comment', createTransaction);
-    app.put('/api/comment/:comment_id', updateTransaction);
-    app.delete('/api/comment/:comment_id', deleteTransaction);
+    app.get('/api/transaction', findAllTransactions);
+    app.post('/api/transaction', createTransaction);
+    app.put('/api/comment/:transaction_id', updateTransaction);
+    app.delete('/api/comment/:transaction_id', deleteTransaction);
+    app.get('/api/transaction/paintings/:painting_id', findAllTransactionsByPaintingId);
+    app.get('/api/transaction/artists/:artist_id', findAllTransactionsByArtistId);
+    app.get('/api/transaction/sellers/:seller_id', findAllTransactionsBySellerId);
+    app.get('/api/transaction/buyers/:buyer_id', findAllTransactionsByBuyerId);
 }
 
 const findAllTransactions = async (req, res) => {
     const transactions = await transactionDao.findAllTransactions();
+    res.json(transactions);
+}
+
+const findAllTransactionsByPaintingId = async (req, res) => {
+    const painting_id = req.params.painting_id;
+    const transactions = await transactionDao.findTransactionByKey("painting_id", painting_id);
+    res.json(transactions);
+}
+
+const findAllTransactionsByArtistId = async (req, res) => {
+    const artist_id = req.params.artist_id;
+    const transactions = await transactionDao.findTransactionByKey("artist_id", artist_id);
+    res.json(transactions);
+}
+
+const findAllTransactionsBySellerId = async (req, res) => {
+    const seller_id = req.params.seller_id;
+    const transactions = await transactionDao.findTransactionByKey("seller_id", seller_id);
+    res.json(transactions);
+}
+
+const findAllTransactionsByBuyerId = async (req, res) => {
+    const buyer_id = req.params.buyer_id;
+    const transactions = await transactionDao.findTransactionByKey("painting_id", buyer_id);
     res.json(transactions);
 }
 

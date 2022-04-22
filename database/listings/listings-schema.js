@@ -1,20 +1,15 @@
 import mongoose from "mongoose";
 
-// https://mongoosejs.com/docs/schematypes.html
-
-const transactionSchema = mongoose.Schema({
-    // transaction_id created by database
+const listingsSchema = mongoose.Schema({
     painting_id: {type: String, required: true},
     artist_id: {type: String, required: true},
     owner_id: {type: String, required: true},
-    buyer_id: String,
-    type: {type: String, enum: ['sell, buy, barter']},
     quality: {String, enum: ['poor, fair, good, excellent']},
-    offer: Number,
+    listing_price: {type: Number, require: true},
     date_created: {type: Date, required: true},
     active_listing: {type: Boolean, required: true},
-    seller_accepted: Boolean,
+    sold: Boolean,
+    sale_price: Number,
+    buyer_id: String,
     date_removed: Date
-}, {collection: "transactions"})
-
-export default transactionSchema
+}, {collection: "listings"})
