@@ -1,67 +1,47 @@
-import commentsDao from "../database/comments/comments-dao.js";
-//let comments = require('./comments.json'); // TODO: replace with Mongo
+import CommentsDao from "../database/comments/comments-dao.js";
 
-const commentsController = (app) => {
-    app.get('/api/comment', findAllComments);
-    app.post('/api/comment', createComment);
-    app.put('/api/tuits/:tid/like', likeComment);
-    app.put('/api/tuits/:tid/unlike', unlikeComment);
-    app.put('/api/comment/:comment_id', updateComment);
-    app.delete('/api/comment/:comment_id', deleteComment);
-}
-
-const findAllComments = async (req, res) => {
-    const comments = await commentsDao.findAllComments();
-    res.json(comments);
+const commentController = (app) => {
+    app.post('/api/comments', createComment);
+    app.get('/api/comments', findAllComments);
+    app.put('/api/comments/:cid', updateComment);
+    app.delete('/api/comments/:cid', deleteComment);
+    app.delete('/api/comments/', deleteComments);
 }
 
 const createComment = async (req, res) => {
     const newComment = req.body;
-    // in the undergrad lecture the prof added the comment
-    // and then returned the whole list back like below
-    await commentsDao.createComment(newComment);
-    const comments = await commentsDao.findAllComments();
-    res.json(comments);
+    const insertedComment = await CommentsDao.createComment(newComment);
+    res.json(insertedComment);
 }
 
-const likeComment = async (req, res) => {
-    const comment_id = req.params['comment_id'];
-    let comment = await commentsDao.findCommentById(comment_id)
-    // in the undergrad lecture the prof liked the comment,
-    // updated list, and then returned the whole list back like below
-    comment.likes++;
-    await commentsDao.updateComment(comment_id, comment)
-    const comments = commentsDao.findAllComments()
-    res.json(comments);
-}
-
-const unlikeComment = async (req, res) => {
-    const comment_id = req.params['comment_id'];
-    let comment = await commentsDao.findCommentById(comment_id)
-    comment.likes--;
-    await commentsDao.updateComment(comment_id, comment)
-    const comments = commentsDao.findAllComments()
+const findAllComments = async (req, res) => {
+    const comments = await CommentsDao.findAllComments();
     res.json(comments);
 }
 
 const updateComment = async (req, res) => {
-    const comment_id = req.params['comment_id'];
+    const commentIdToUpdate = req.params.cid;
     const updatedComment = req.body;
-    const status = commentsDao.updateComment(comment_id, updatedComment);
+    const status = await CommentsDao.updateComment(commentIdToUpdate, updatedComment);
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
 }
 
 const deleteComment = async (req, res) => {
-    const comment_id = req.params['comment_id'];
-    // in the undergrad lecture the prof deleted the comment
-    // and then returned the whole list back like below
-    await commentsDao.deleteComment(comment_id);
-    const status = await commentsDao.findAllComments();
+    const commentIdToDelete = req.params.cid;
+    const status = await CommentsDao.deleteComment(commentIdToDelete);
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
 }
 
-export default commentsController;
+const deleteComments = async (req, res) => {
+    const status = await CommentsDao.deleteComments();
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    }
+}
+
+
+export default commentController;

@@ -6,9 +6,10 @@ const commentsSchema = mongoose.Schema({
     // comment_id created by database
     user_id: String,
     username: String,
-    comment: String,
+    post: String,
     post_date: {type: Date, default: Date.now()},
-    likes: {type: Number, default: 0}
+    likes: {type: Number, default: 0},
+    liked: {type: Boolean, default: false}
 }, {collection: 'comments'});
 
 export default commentsSchema;
