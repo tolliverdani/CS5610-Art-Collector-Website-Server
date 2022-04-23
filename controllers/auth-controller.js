@@ -68,11 +68,7 @@ const logout = (req, res) => {
 
 const profile = (req, res) => {
     const user = req.session['profile'];
-    if (user) {
-        res.json(user)
-    } else {
-        res.sendStatus(403)
-    }
+    if (user) res.json(user);
 }
 
 export default authController;
