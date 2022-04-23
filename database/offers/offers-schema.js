@@ -12,3 +12,5 @@ const offersSchema = mongoose.Schema({
     accepted: Boolean,
     date_removed: Date
 }, {collection: "offers"})
+
+export default offersSchema;
