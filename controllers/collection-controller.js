@@ -28,7 +28,7 @@ const addToCollection = async (req, res) => {
     console.log(original_collection);
 
     // check to see if item already exists in collection
-    if (original_collection.findIndex(item => item.id === item_to_add.id) > 0 ){
+    if (original_collection.findIndex(item => item.id === item_to_add.id) !== -1 ){
         console.log("item already in user collection");
         res.sendStatus(400)
         return;
