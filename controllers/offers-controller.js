@@ -45,10 +45,5 @@ const findOffersBySellerId = async (req, res) => {
     res.json(offers);
 }
 
-const findOffersByArtistId = async (req, res) => {
-    const artist_id = req.params.artist_id;
-    const offers = await offersDao.findOffersByArtistId(artist_id)
-    res.json(offers);
-}
 
 export default offersController;

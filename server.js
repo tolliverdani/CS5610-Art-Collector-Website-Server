@@ -12,6 +12,7 @@ import AuthController from "./controllers/auth-controller.js";
 import CollectionsController from "./controllers/collection-controller.js";
 import TransactionsController from "./controllers/transactions-controller.js";
 import ListingsController from "./controllers/listings-controller.js";
+import OffersController from "./controllers/offers-controller.js";
 const app = express();
 
 const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING ||
@@ -50,5 +51,6 @@ AuthController(app);
 CollectionsController(app);
 TransactionsController(app);
 ListingsController(app);
+OffersController(app);
 
 app.listen(process.env.PORT || 4000);
