@@ -4,6 +4,7 @@ const listingsController = (app) => {
     app.get('/api/listings', findAllListings);
     app.post('/api/listings', createListing);
     app.get('/api/listings/byPaintingId/:painting_id', findListingsByPaintingId);
+    app.get('/api/listings/sold/byPaintingId/:painting_id', findSoldListingsByPaintingId);
     app.get('/api/listings/byOwnerId/:owner_id', findListingsByOwnerId);
     app.get('/api/listings/byArtistId/:artist_id', findListingsByArtistId);
 
@@ -25,6 +26,12 @@ const createListing = async (req, res) => {
 const findListingsByPaintingId = async (req, res) => {
     const painting_id = req.params.painting_id;
     const listings = await listingsDao.findListingsByPaintingId(painting_id)
+    res.json(listings);
+}
+
+const findSoldListingsByPaintingId = async (req, res) => {
+    const painting_id = req.params.painting_id;
+    const listings = await listingsDao.findSoldListingsByPaintingId(painting_id)
     res.json(listings);
 }
 
