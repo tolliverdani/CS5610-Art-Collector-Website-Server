@@ -7,8 +7,6 @@ const listingsController = (app) => {
     app.get('/api/listings/sold/byPaintingId/:painting_id', findSoldListingsByPaintingId);
     app.get('/api/listings/byOwnerId/:owner_id', findListingsByOwnerId);
     app.get('/api/listings/byArtistId/:artist_id', findListingsByArtistId);
-
-
 }
 
 const findAllListings = async (req, res) => {
