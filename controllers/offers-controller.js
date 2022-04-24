@@ -7,6 +7,8 @@ const offersController = (app) => {
     app.get('/api/offers/byBidderId/:owner_id', findOffersByBidderId);
     app.get('/api/offers/bySellerId/:user_id', findOffersBySellerId);
     app.get('/api/offers/byArtistId/:artist_id', findOffersByArtistId);
+    app.put('/api/offers/approve/:offer_id', approveOffer);
+    app.put('/api/offers/reject/:offer_id', rejectOffer);
 }
 
 const findAllOffers = async (req, res) => {
@@ -45,5 +47,20 @@ const findOffersBySellerId = async (req, res) => {
     res.json(offers);
 }
 
+{/* TODO: this needs help */}
+const approveOffer = async (req, res) => {
+    const user_id = req.params.user_id;
+    const offer_id = req.params.offer_id;
+    const offers = await offersDao.approveOffer(user_id, offer_id)
+    res.json(offers);
+}
+
+{/* TODO: this needs help */}
+const rejectOffer = async (req, res) => {
+    const user_id = req.params.user_id;
+    const offer_id = req.params.offer_id;
+    const offers = await offersDao.rejectOffer(user_id, user_id)
+    res.json(offers);
+}
 
 export default offersController;
