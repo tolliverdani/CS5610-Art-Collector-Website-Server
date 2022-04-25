@@ -1,5 +1,16 @@
 import collectionDao from "../database/collection/collection-dao.js"
 
+const CollectionsController = (app) => {
+    app.get('/api/collection/', findAllInCollection);
+    app.get('/api/collection/:user_id', findUserCollection);
+    app.get('/api/collection/get', getCollection);
+    app.post('/api/collection/', createCollection);
+    app.put('/api/collection/add/:user_id', addToCollection);
+    app.delete('/api/collection/remove/:user_id/:painting_id', removeFromCollection);
+    app.delete('/api/collection/clear', deleteCollection);
+    app.put('/api/collection/:user_id', updateCollection);
+}
+
 const findAllInCollection = async (req, res) => {
     const collection = await collectionDao.findAllInCollection();
     res.json(collection);
@@ -49,13 +60,12 @@ const addToCollection = async (req, res) => {
 const removeFromCollection = async (req, res) => {
     console.log("in remove from collection");
     const user_id = req.params['user_id'];
-    const item_id = req.body;
+    const painting_id = req.params["painting_id"];
 
     // get current collection for user and if not found return error
     let collection_res = await collectionDao.findCollectionById(user_id);
 
-    console.log("here is the API response: " + colleciton_res)
-
+    console.log("here is the API response: " + collection_res)
     if (!collection_res) {
         res.sendStatus(400);
         return;
@@ -63,16 +73,20 @@ const removeFromCollection = async (req, res) => {
 
     let original_collection = collection_res.contents;
     console.log("looking at contents of collection: " + original_collection)
+    console.log("specifically, we are looking for artwork with id: " + painting_id)
 
-    // check to see if item already exists in collection
-    if (original_collection.findIndex(item => item.id === item_id.id) === -1) {
-        console.log("item not in user collection");
+    // try to find the index of the painting to remove
+    const index = original_collection.findIndex(item => item.id === painting_id);
+    console.log("Here is the index value: " + index)
+    if ( index === -1 ) {
+        console.log("item not in user collection so can't remove it");
         res.sendStatus(400)
         return;
     }
 
-    // if not, append the new item to the collection
-    original_collection.delete(item_id);
+    // as long as it is in the array remove it
+    original_collection.splice(index, 1);
+
 
     const response = await collectionDao.updateCollection(user_id, collection_res)
     console.log(response)
@@ -120,16 +134,6 @@ const findUserCollection = async (req, res) => {
     }
 }
 
-// TODO, I don't think these should all be get?
-const CollectionsController = (app) => {
-    app.get('/api/collection/', findAllInCollection);
-    app.get('/api/collection/:user_id', findUserCollection);
-    app.get('/api/collection/get', getCollection);
-    app.post('/api/collection/', createCollection);
-    app.put('/api/collection/add/:user_id', addToCollection);
-    app.delete('/api/collection/remove/:user_id', removeFromCollection);
-    app.delete('/api/collection/clear', deleteCollection);
-    app.put('/api/collection/:user_id', updateCollection);
-}
+
 
 export default CollectionsController;
