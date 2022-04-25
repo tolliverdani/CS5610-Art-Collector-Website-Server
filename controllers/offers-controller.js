@@ -11,7 +11,7 @@ const offersController = (app) => {
     app.get('/api/offers/byListingId/:listing_id', findOffersByListingId);
     app.get('/api/offers/:offer_id', findOfferById)
     app.put('/api/offers/approve', approveOffer);
-    app.put('/api/offers/reject/:offer_id', rejectOffer);
+    app.put('/api/offers/reject', rejectOffer);
 }
 
 
@@ -63,16 +63,6 @@ const findOffersBySellerId = async (req, res) => {
     res.json(offers);
 }
 
-// const rejectOffer = async (req, res, {offer}) => {
-//     const offer_id = offer._id;
-//     const offer_to_update = {...offer, active_offer: false, accepted:false, date_removed: new Date()}
-//     const update_status = await offersDao.updateOffer(offer_id, offer_to_update);
-//     if ( update_status.modifiedCount === 1 ){
-//         res.sendStatus(200);
-//     } else {
-//         res. sendStatus(400);
-//     }
-// }
 
 {/* TODO: this needs help */}
 const approveOffer = async (req, res) => {
@@ -93,20 +83,13 @@ const approveOffer = async (req, res) => {
                 }
             }
         })
-        console.log(listing_id)
-        console.log(typeof(listing_id))
         listingsDao.findListingsById(listing_id).then(listing => {
-            console.log("Here is the listing: " + JSON.stringify(listing, undefined, 4))
             listing.active_listing = false;
             listing.sold = true;
             listing.sale_price = accepted_offer.offer_price;
             listing.buyer_id = accepted_offer.buyer_id;
             listing.date_removed = new Date();
-            console.log("Here is the listing after being altered: " + JSON.stringify(listing, undefined, 4))
-
             listingsDao.updateListing(listing_id,listing).then(response => {
-                console.log(response)
-                console.log(listing_id)
                 res.send({"listingId": listing_id})
             })
         })
@@ -117,10 +100,15 @@ const approveOffer = async (req, res) => {
 
 {/* TODO: this needs help */}
 const rejectOffer = async (req, res) => {
-    const user_id = req.params.user_id;
-    const offer_id = req.params.offer_id;
-    const offers = await offersDao.rejectOffer(user_id, user_id)
-    res.json(offers);
+    const offer = req.body;
+    const offer_id = req.body._id;
+    const rejected_offer = {...offer, active_offer: false, accepted: false, date_removed: new Date()}
+    const update_status = await offersDao.updateOffer(offer_id, rejected_offer)
+    if ( update_status.modifiedCount === 1) {
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(400)
+    }
 }
 
 export default offersController;
