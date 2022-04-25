@@ -4,6 +4,7 @@ const findAllOffers = () => offersModel.find();
 const findOffersById = (offer_id) => offersModel.findById(offer_id);
 const findOffersByPaintingId = (value) => offersModel.find({painting_id: value}).sort({date_created:-1});
 const findOffersByArtistId = (value) => offersModel.find({artist_id: value});
+const findOffersByListingId = (value) => offersModel.find({listing_id: value});
 const findOffersByBidderId = (value) => offersModel.find({bidder_id: value});
 const findOffersBySellerId = (value) => offersModel.find({seller_id: value});
 
@@ -17,6 +18,7 @@ export default {
     findAllOffers,
     findOffersById,
     findOffersByPaintingId,
+    findOffersByListingId,
     findOffersByArtistId,
     findOffersBySellerId,
     findOffersByBidderId,
