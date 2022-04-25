@@ -104,10 +104,12 @@ const approveOffer = async (req, res) => {
             listing.date_removed = new Date();
             console.log("Here is the listing after being altered: " + JSON.stringify(listing, undefined, 4))
 
-            listingsDao.updateListing(listing_id,listing).then(response => console.log(response))
+            listingsDao.updateListing(listing_id,listing).then(response => {
+                console.log(response)
+                console.log(listing_id)
+                res.send({"listingId": listing_id})
+            })
         })
-
-        res.sendStatus(200);
     } else {
         res.sendStatus(400);
     }
