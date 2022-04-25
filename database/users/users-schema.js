@@ -11,7 +11,8 @@ const usersSchema = mongoose.Schema({
     rating: {type: Number, default: 0},
     collection_id: String, // automatically created when user is created
     reviewed_privacy_policy: {type: Boolean, required: true, default: false},
-    location: {type: String, required: true, default: ""}
+    location: {type: String, required: true, default: ""},
+    pronoun: String
 }, {collection: "users"})
 
 export default usersSchema;

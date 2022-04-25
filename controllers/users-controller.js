@@ -9,7 +9,7 @@ const usersController = (app) => {
     app.get('/api/users/:id', findUserById);
     app.get('/api/users/email/:email', findUserByEmail);
     //app.post('/api/users/credentials', findUserByCredentials);
-    app.put('/api/users/:id', updateUser);
+    app.put('/api/users', updateUser);
     app.delete('/api/users/:id', deleteUser);
 }
 
@@ -51,12 +51,12 @@ const findUserByCredentials = async (req, res) => {
 
 // TODO: do we need to do anything with collection here?
 const updateUser = async (req, res) => {
-    const user = req.body
-    const userId = req.params['id']
-    const status = await userDao.updateUser(
-        userId,
-        user
-    )
+    console.log("In users controller. About to update the user")
+    const user = req.body;
+    const userId = user._id;
+    console.log(user)
+    const status = await userDao.updateUser(userId, user)
+    console.log(status)
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
