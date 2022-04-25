@@ -12,6 +12,7 @@ const usersSchema = mongoose.Schema({
     collection_id: String, // automatically created when user is created
     reviewed_privacy_policy: {type: Boolean, required: true, default: false},
     location: {type: String, required: true, default: ""},
+    bio: String,
     pronoun: String
 }, {collection: "users"})
 
