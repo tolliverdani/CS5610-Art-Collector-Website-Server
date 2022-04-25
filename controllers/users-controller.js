@@ -22,6 +22,7 @@ const findUserById = async (req, res) => {
     const userId = req.params['id']
     const user = await userDao.findUserById(userId)
     if (user) {
+        user.password = "";
         res.json(user)
     } else {
         res.sendStatus(404)
