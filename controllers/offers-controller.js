@@ -66,11 +66,18 @@ const findOffersBySellerId = async (req, res) => {
 
 {/* TODO: this needs help */}
 const approveOffer = async (req, res) => {
+    // pull needed params to do the work
     const offer = req.body;
     const offer_id = req.body._id;
     const listing_id = req.body.listing_id;
+
+    // make a duplicate json with the correct attributes
     const accepted_offer = {...offer, active_offer: false, accepted: true, date_removed: new Date()}
+
+    // try updating the offer
     const update_status = await offersDao.updateOffer(offer_id, accepted_offer)
+
+    // if that works, we need to find all the other offers associated with the transaction and remove them
     if ( update_status.modifiedCount === 1) {
         offersDao.findOffersByListingId(listing_id).then( (offers) => {
             for ( let i = 0; i < offers.length; i++ ) {
@@ -83,6 +90,8 @@ const approveOffer = async (req, res) => {
                 }
             }
         })
+
+        // then find the listing and update it so that it is no longer available
         listingsDao.findListingsById(listing_id).then(listing => {
             listing.active_listing = false;
             listing.sold = true;
@@ -90,6 +99,7 @@ const approveOffer = async (req, res) => {
             listing.buyer_id = accepted_offer.buyer_id;
             listing.date_removed = new Date();
             listingsDao.updateListing(listing_id,listing).then(response => {
+
                 res.send({"listingId": listing_id})
             })
         })
