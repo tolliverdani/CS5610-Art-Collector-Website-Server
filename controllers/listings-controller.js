@@ -3,10 +3,22 @@ import listingsDao from "../database/listings/listings-dao.js";
 const listingsController = (app) => {
     app.get('/api/listings', findAllListings);
     app.post('/api/listings', createListing);
+    app.put('/api/listings/remove', removeListing);
     app.get('/api/listings/byPaintingId/:painting_id', findListingsByPaintingId);
     app.get('/api/listings/sold/byPaintingId/:painting_id', findSoldListingsByPaintingId);
     app.get('/api/listings/byOwnerId/:owner_id', findListingsByOwnerId);
     app.get('/api/listings/byArtistId/:artist_id', findListingsByArtistId);
+}
+
+const removeListing = async (req, res) => {
+    const listing = req.body;
+    const listing_to_remove = {...listing, active_listing: false, sold: false, date_removed: new Date()}
+    const status = await listingsDao.updateListing(listing._id, listing_to_remove)
+    if ( status.modifiedCount === 1 ){
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(400)
+    }
 }
 
 const findAllListings = async (req, res) => {
