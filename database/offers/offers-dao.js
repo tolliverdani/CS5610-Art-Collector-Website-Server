@@ -1,6 +1,6 @@
 import offersModel from "./offers-model.js";
 
-const findAllOffers = () => offersModel.find();
+const findAllOffers = () => offersModel.find().sort({painting_name: 1});
 const findOffersById = (offer_id) => offersModel.findById(offer_id);
 const findOffersByPaintingId = (value) => offersModel.find({painting_id: value}).sort({date_created:-1});
 const findOffersByArtistId = (value) => offersModel.find({artist_id: value});

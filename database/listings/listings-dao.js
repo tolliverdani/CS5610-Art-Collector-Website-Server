@@ -1,6 +1,6 @@
 import listingsModel from "./listings-model.js";
 
-const findAllListings = () => listingsModel.find();
+const findAllListings = () => listingsModel.find().sort({painting_title: 1});
 const findListingsById = (listing_id) => listingsModel.findById(listing_id);
 const findListingsByPaintingId = (value) => listingsModel.find({painting_id: value});
 const findSoldListingsByPaintingId = (value) => listingsModel.find({painting_id: value, sold: true}).sort({date_removed: -1})
