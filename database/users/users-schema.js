@@ -13,7 +13,8 @@ const usersSchema = mongoose.Schema({
     reviewed_privacy_policy: {type: Boolean, required: true, default: false},
     location: {type: String, required: true, default: ""},
     bio: String,
-    pronoun: String
+    pronoun: String,
+    icon: {type: String, default: ""}
 }, {collection: "users"})
 
 export default usersSchema;
