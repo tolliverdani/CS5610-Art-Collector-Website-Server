@@ -12,6 +12,26 @@ const offersController = (app) => {
     app.get('/api/offers/:offer_id', findOfferById)
     app.put('/api/offers/approve', approveOffer);
     app.put('/api/offers/reject', rejectOffer);
+    app.put('/api/offers', updateOffer);
+    app.delete('/api/offers/:offer_id', deleteOffer);
+}
+
+const deleteOffer = async (req, res) => {
+    const offer_id = req.params.offer_id;
+    const response = await offersDao.deleteOffer(offer_id);
+    if ( response.deletedCount === 1 ){
+        res.sendStatus(200)
+    }
+}
+
+const updateOffer = async (req, res) => {
+    const updated_offer = req.body;
+    const response = await offersDao.updateOffer(updated_offer._id, updated_offer);
+    if ( response.modifiedCount === 1) {
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(400)
+    }
 }
 
 
