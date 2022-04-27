@@ -49,11 +49,19 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const userId = req.params.user_id
-    const user = findUserById(userId)
+    const user_being_deleted = await userDao.findUserById(userId)
+    console.log(user_being_deleted)
     // must delete the collection from the user when deleting a user
-    const status_collection = await collectionDao.deleteCollection(user.collection_id)
-    const status_user = await userDao.deleteUser(userId)
-    if (status_collection.acknowledged === true && status_user === true) {
+    // because of some inconsistencies with the schema creation, need to check if this exists
+    if ( user_being_deleted.hasOwnProperty("collection_id") ) {
+        const collection_status = await collectionDao.deleteCollection(user_being_deleted.collection_id)
+        if ( collection_status.deletedCount !== 1) {
+            return res.sendStatus(400)
+        }
+    }
+
+    const user_status = await userDao.deleteUser(userId)
+    if (user_status.deletedCount === 1) {
         res.sendStatus(200)
     }
 }
