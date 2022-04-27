@@ -3,9 +3,9 @@ import listingsDao from "../database/listings/listings-dao.js";
 const listingsController = (app) => {
     app.get('/api/listings', findAllListings);
     app.post('/api/listings', createListing);
+    app.put('/api/listings', updateListing);
     app.delete('/api/listings/:listing_id', deleteListing);
     app.put('/api/listings/remove', removeListing);
-    app.put('/api/listings', updateListing);
     app.get('/api/listings/byPaintingId/:painting_id', findListingsByPaintingId);
     app.get('/api/listings/sold/byPaintingId/:painting_id', findSoldListingsByPaintingId);
     app.get('/api/listings/byOwnerId/:owner_id', findListingsByOwnerId);
@@ -13,10 +13,9 @@ const listingsController = (app) => {
 }
 
 const updateListing = async (req, res) => {
-    console.log("In listings controller. About to update with this listing id: " + JSON.stringify(req.body, undefined, 4))
     const listing = req.body;
-    const listing_id = listing._id;
-    const status = listingsDao.updateListing(listing_id, listing);
+    const listingId = listing._id;
+    const status = await listingsDao.updateListing(listingId, listing);
     console.log(status)
     if (status.acknowledged === true) {
         res.sendStatus(200)
@@ -27,7 +26,7 @@ const updateListing = async (req, res) => {
 
 const deleteListing = async (req, res) => {
     const listing_id = req.params.listing_id;
-    const status = listingsDao.deleteListing(listing_id);
+    const status = await listingsDao.deleteListing(listing_id);
     if ( status.deletedCount === 1) {
         res.sendStatus(200)
     } else {
