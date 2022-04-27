@@ -4,11 +4,9 @@ import express from "express";
 
 const usersController = (app) => {
     app.use(express.json());
-
     app.get('/api/users', findAllUsers);
     app.get('/api/users/:id', findUserById);
     app.get('/api/users/email/:email', findUserByEmail);
-    //app.post('/api/users/credentials', findUserByCredentials);
     app.put('/api/users', updateUser);
     app.delete('/api/users/:user_id', deleteUser);
 }
@@ -39,25 +37,11 @@ const findUserByEmail = async (req, res) => {
     }
 }
 
-const findUserByCredentials = async (req, res) => {
-    const credentials = req.body
-    const {email, password} = credentials
-    const user = await userDao.findUserByCredentials(email, password)
-    if (user) {
-        res.sendStatus(200)
-    } else {
-        res.sendStatus(403)
-    }
-}
 
-// TODO: do we need to do anything with collection here?
 const updateUser = async (req, res) => {
-    console.log("In users controller. About to update the user")
     const user = req.body;
     const userId = user._id;
-    console.log(user)
     const status = await userDao.updateUser(userId, user)
-    console.log(status)
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }

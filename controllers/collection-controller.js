@@ -23,24 +23,20 @@ const createCollection = async (req, res) => {
 }
 
 const addToCollection = async (req, res) => {
-    console.log("in add to collection");
     const user_id = req.params['user_id'];
     const item_to_add = req.body;
 
     // get current collection for user and if not found return error
     let collection_res = await collectionDao.findCollectionById(user_id);
-    console.log(collection_res)
     if (!collection_res) {
         res.sendStatus(400);
         return;
     }
 
     let original_collection = collection_res.contents;
-    console.log(original_collection);
 
     // check to see if item already exists in collection
     if (original_collection.findIndex(item => item.id === item_to_add.id) !== -1) {
-        console.log("item already in user collection");
         res.sendStatus(400)
         return;
     }
@@ -49,7 +45,6 @@ const addToCollection = async (req, res) => {
     original_collection.push(item_to_add);
 
     const response = await collectionDao.updateCollection(user_id, collection_res)
-    console.log(response)
     if (response.modifiedCount === 1) {
         res.sendStatus(200);
     } else {
@@ -58,28 +53,22 @@ const addToCollection = async (req, res) => {
 }
 
 const removeFromCollection = async (req, res) => {
-    console.log("in remove from collection");
     const user_id = req.params['user_id'];
     const painting_id = req.params["painting_id"];
 
     // get current collection for user and if not found return error
     let collection_res = await collectionDao.findCollectionById(user_id);
 
-    console.log("here is the API response: " + collection_res)
     if (!collection_res) {
         res.sendStatus(400);
         return;
     }
 
     let original_collection = collection_res.contents;
-    console.log("looking at contents of collection: " + original_collection)
-    console.log("specifically, we are looking for artwork with id: " + painting_id)
 
     // try to find the index of the painting to remove
     const index = original_collection.findIndex(item => item.id === painting_id);
-    console.log("Here is the index value: " + index)
     if ( index === -1 ) {
-        console.log("item not in user collection so can't remove it");
         res.sendStatus(400)
         return;
     }
@@ -89,7 +78,6 @@ const removeFromCollection = async (req, res) => {
 
 
     const response = await collectionDao.updateCollection(user_id, collection_res)
-    console.log(response)
     if (response.modifiedCount === 1) {
         res.sendStatus(200);
     } else {
@@ -112,11 +100,9 @@ const deleteCollection = async (req, res) => {
 }
 
 const updateCollection = async (req, res) => {
-    console.log("in update collection");
     const body = req.body;
     const _id = req.body._id;
     const status = await collectionDao.updateCollection(_id, body);
-    console.log(status);
     if (status["modifiedCount"] === 1) {
         res.sendStatus(200);
     } else {

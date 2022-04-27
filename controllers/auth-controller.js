@@ -4,7 +4,6 @@ import collectionDao from "../database/collection/collection-dao.js";
 
 const authController = (app) => {
     app.use(express.json());
-
     app.post("/api/auth/login", login);
     app.post("/api/auth/signup", signup);
     app.post("/api/auth/profile", profile);
@@ -37,13 +36,8 @@ const signup = async (req, res) => {
         if ( exisitingCollection ) {
             res.sendStatus(403);
         } else {
-
-            console.log(`creating a new collection for user with id: ${insertedUser._id}`)
-
             // if not, add their collection
             const newCollection = await collectionDao.createCollection({user_id: insertedUser._id})
-
-            console.log(`About to append collection_id ${newCollection._id} to the user`)
 
             // add attribute to user profile
             insertedUser.collection_id = newCollection._id;
@@ -52,9 +46,6 @@ const signup = async (req, res) => {
             if ( status.modifiedCount !== 1 ) {
                 res.sendStatus(403)
             }
-
-            console.log(newCollection);
-            console.log(insertedUser)
         }
 
         res.json(insertedUser);

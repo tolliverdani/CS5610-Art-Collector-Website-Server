@@ -16,7 +16,6 @@ const updateListing = async (req, res) => {
     const listing = req.body;
     const listingId = listing._id;
     const status = await listingsDao.updateListing(listingId, listing);
-    console.log(status)
     if (status.acknowledged === true) {
         res.sendStatus(200)
     } else {

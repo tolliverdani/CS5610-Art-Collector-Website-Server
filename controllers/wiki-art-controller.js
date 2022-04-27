@@ -83,7 +83,6 @@ const paintingGeneralSearch = async (req, res) => {
 }
 
 const artistDetails = async (req, res) => {
-    console.log("in artist details")
     const search_term = req.params['search_term'];
     const request_url = `${API_SHORT}/${search_term}?json=2`;
     try {
