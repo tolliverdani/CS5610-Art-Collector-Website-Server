@@ -42,7 +42,19 @@ const signup = async (req, res) => {
 
             // if not, add their collection
             const newCollection = await collectionDao.createCollection({user_id: insertedUser._id})
+
+            console.log(`About to append collection_id ${newCollection._id} to the user`)
+
+            // add attribute to user profile
+            insertedUser.collection_id = newCollection._id;
+            const status = await userDao.updateUser(insertedUser._id, insertedUser)
+
+            if ( status.modifiedCount !== 1 ) {
+                res.sendStatus(403)
+            }
+
             console.log(newCollection);
+            console.log(insertedUser)
         }
 
         res.json(insertedUser);

@@ -10,7 +10,7 @@ const usersController = (app) => {
     app.get('/api/users/email/:email', findUserByEmail);
     //app.post('/api/users/credentials', findUserByCredentials);
     app.put('/api/users', updateUser);
-    app.delete('/api/users/:id', deleteUser);
+    app.delete('/api/users/:user_id', deleteUser);
 }
 
 const findAllUsers = async (req, res) => {
@@ -64,7 +64,7 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    const userId = req.params['id']
+    const userId = req.params.user_id
     const user = findUserById(userId)
     // must delete the collection from the user when deleting a user
     const status_collection = await collectionDao.deleteCollection(user.collection_id)
