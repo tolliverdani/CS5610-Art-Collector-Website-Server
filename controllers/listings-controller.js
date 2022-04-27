@@ -5,10 +5,24 @@ const listingsController = (app) => {
     app.post('/api/listings', createListing);
     app.delete('/api/listings/:listing_id', deleteListing);
     app.put('/api/listings/remove', removeListing);
+    app.put('/api/listings', updateListing);
     app.get('/api/listings/byPaintingId/:painting_id', findListingsByPaintingId);
     app.get('/api/listings/sold/byPaintingId/:painting_id', findSoldListingsByPaintingId);
     app.get('/api/listings/byOwnerId/:owner_id', findListingsByOwnerId);
     app.get('/api/listings/byArtistId/:artist_id', findListingsByArtistId);
+}
+
+const updateListing = async (req, res) => {
+    console.log("In listings controller. About to update with this listing id: " + JSON.stringify(req.body, undefined, 4))
+    const listing = req.body;
+    const listing_id = listing._id;
+    const status = listingsDao.updateListing(listing_id, listing);
+    console.log(status)
+    if (status.acknowledged === true) {
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(400)
+    }
 }
 
 const deleteListing = async (req, res) => {
