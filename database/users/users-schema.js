@@ -15,7 +15,8 @@ const usersSchema = mongoose.Schema({
     bio: String,
     pronoun: String,
     icon: {type: String, default: ""},
-    is_admin: {type: Boolean, default: false}
+    is_admin: {type: Boolean, default: false},
+    is_artist: {type: Boolean, default: false}
 }, {collection: "users"})
 
 export default usersSchema;
