@@ -34,17 +34,17 @@ const findAllComments = async (req, res) => {
 }
 
 const updateComment = async (req, res) => {
-    const commentIdToUpdate = req.params.cid;
+    const comment_id = req.params.cid;
     const updatedComment = req.body;
-    const status = await CommentsDao.updateComment(commentIdToUpdate, updatedComment);
+    const status = await CommentsDao.updateComment(comment_id, updatedComment);
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
 }
 
 const deleteComment = async (req, res) => {
-    const commentIdToDelete = req.params.cid;
-    const status = await CommentsDao.deleteComment(commentIdToDelete);
+    const comment_id = req.params.cid;
+    const status = await CommentsDao.deleteComment(comment_id);
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
