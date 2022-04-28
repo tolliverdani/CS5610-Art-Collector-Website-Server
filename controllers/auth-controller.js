@@ -1,9 +1,7 @@
 import userDao from "../database/users/users-dao.js";
-import express from "express";
 import collectionDao from "../database/collection/collection-dao.js";
 
 const authController = (app) => {
-    app.use(express.json());
     app.post("/api/auth/login", login);
     app.post("/api/auth/signup", signup);
     app.post("/api/auth/profile", profile);
@@ -14,6 +12,8 @@ const authController = (app) => {
 const signup = async (req, res) => {
     // retrieve contents of the body
     const user = req.body;
+    console.log("inside the signup in auth-controller")
+    console.log(JSON.stringify(user, undefined, 4))
 
     // check to see if they are an existing user based on email in mongo
     const existingUser = await userDao.findUserByEmail(user.email);
@@ -25,9 +25,9 @@ const signup = async (req, res) => {
         // otherwise, insert user in mongo
         // at the same time, create a collection for that user
     } else {
+
         const insertedUser = await userDao.createUser(user);
-        insertedUser.password = '';
-        req.session['profile'] = insertedUser;
+        console.log("this is the inserted user: " + JSON.stringify(insertedUser,undefined,4))
 
         // check to see if the user already has a collection, which they shouldn't
         const exisitingCollection = await collectionDao.findCollectionById(insertedUser._id);
@@ -35,6 +35,7 @@ const signup = async (req, res) => {
         // if they do, return an error
         if ( exisitingCollection ) {
             res.sendStatus(403);
+
         } else {
             // if not, add their collection
             const newCollection = await collectionDao.createCollection({user_id: insertedUser._id})
@@ -43,6 +44,8 @@ const signup = async (req, res) => {
             insertedUser.collection_id = newCollection._id;
             const status = await userDao.updateUser(insertedUser._id, insertedUser)
 
+            insertedUser.password = '';
+            req.session['profile'] = insertedUser;
             if ( status.modifiedCount !== 1 ) {
                 res.sendStatus(403)
             }
@@ -54,7 +57,10 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     const user = req.body;
+    console.log(JSON.stringify(req.body, undefined, 4))
+    console.log("this is the user: " + JSON.stringify(user, undefined, 4))
     const existingUser = await userDao.findUserByCredentials(user.email, user.password);
+    console.log("this is the existinguser: " + existingUser)
     if (existingUser) {
         existingUser.password = '';
         req.session['profile'] = existingUser;
