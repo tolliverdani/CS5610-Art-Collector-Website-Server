@@ -6,6 +6,7 @@ const authController = (app) => {
     app.post("/api/auth/signup", signup);
     app.post("/api/auth/profile", profile);
     app.post("/api/auth/logout", logout);
+    app.post("/api/auth/updateProfile", updateCurrentUserProfile)
 }
 
 /* user auth controls */
@@ -78,6 +79,17 @@ const logout = (req, res) => {
 const profile = (req, res) => {
     const user = req.session['profile'];
     if (user) res.json(user);
+}
+
+const updateCurrentUserProfile = async (req, res) => {
+    const user = req.body;
+    const userId = user._id;
+    const status = await userDao.updateUser(userId, user)
+    if (status.acknowledged === true) {
+        user.password = ''
+        req.session[`profile`] = user;
+        res.sendStatus(200)
+    }
 }
 
 export default authController;

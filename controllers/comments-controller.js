@@ -6,6 +6,20 @@ const commentController = (app) => {
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
     app.delete('/api/comments/', deleteComments);
+    app.get('/api/comments/painting/:p_id', findCommentsByPaintingId)
+    app.get('/api/comments/artist/:a_id', findCommentsByArtistId)
+}
+
+const findCommentsByPaintingId = async (req, res) => {
+    const painting_id = req.params.p_id;
+    const comments = await CommentsDao.findAllCommentsByPaintingId(painting_id)
+    res.json(comments)
+}
+
+const findCommentsByArtistId = async (req, res) => {
+    const artist_id = req.params.a_id;
+    const comments = await CommentsDao.findAllCommentsByArtistId(artist_id)
+    res.json(comments)
 }
 
 const createComment = async (req, res) => {
