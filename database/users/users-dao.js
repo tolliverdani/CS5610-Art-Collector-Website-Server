@@ -10,7 +10,7 @@ const updateUser = (id, user) => userModel.updateOne({_id: id}, {$set: user})
 
 export default {
     findAllUsers,
-    findUserById,
+    findUserById
     findUserByEmail,
     findUserByCredentials,
     createUser,
