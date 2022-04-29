@@ -6,7 +6,7 @@ const authController = (app) => {
     app.post("/api/auth/signup", signup);
     app.post("/api/auth/profile", profile);
     app.post("/api/auth/logout", logout);
-    app.post("/api/auth/updateProfile", updateCurrentUserProfile)
+    app.put("/api/auth/profile", updateCurrentUserProfile)
 }
 
 /* user auth controls */
