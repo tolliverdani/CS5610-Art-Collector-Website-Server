@@ -1,7 +1,7 @@
 import commentsModel from "./comments-model.js";
 
 const findAllComments = () => commentsModel.find();
-const findAllCommentsByPaintingId = (painting_id) => commentsModel.find({type: "painting", painting_id: painting_id});
+const findAllCommentsByPaintingId = (painting_id) => commentsModel.find({type: "painting", painting_id: painting_id}).sort({comment_date: -1});
 const findAllCommentsByArtistId = (artist_id) => commentsModel.find({type: "artist", artist_id: artist_id})
 const findCommentById = (comment_id) => commentsModel.findById(comment_id)
 const createComment = (comment) => commentsModel.create(comment);

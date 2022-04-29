@@ -79,6 +79,7 @@ const logout = (req, res) => {
 const profile = (req, res) => {
     const user = req.session['profile'];
     if (user) res.json(user);
+    // TODO Jose returns res.sendStatus(403) in an else statement here
 }
 
 const updateCurrentUserProfile = async (req, res) => {
