@@ -17,8 +17,8 @@ const findAllUsers = async (req, res) => {
 }
 
 const findUserById = async (req, res) => {
-    const userId = req.params['id']
-    const user = await userDao.findUserById(userId)
+    const user_id = req.params['id']
+    const user = await userDao.findUserById(user_id)
     if (user) {
         user.password = "";
         res.json(user)
@@ -37,19 +37,18 @@ const findUserByEmail = async (req, res) => {
     }
 }
 
-
 const updateUser = async (req, res) => {
     const user = req.body;
-    const userId = user._id;
-    const status = await userDao.updateUser(userId, user)
+    const user_id = user._id;
+    const status = await userDao.updateUser(user_id, user)
     if (status.acknowledged === true) {
         res.sendStatus(200)
     }
 }
 
 const deleteUser = async (req, res) => {
-    const userId = req.params.user_id
-    const user_being_deleted = await userDao.findUserById(userId)
+    const user_id = req.params.user_id
+    const user_being_deleted = await userDao.findUserById(user_id)
     // must delete the collection from the user when deleting a user
     // because of some inconsistencies with the schema creation, need to check if this exists
     if ( user_being_deleted.hasOwnProperty("collection_id") ) {
@@ -59,7 +58,7 @@ const deleteUser = async (req, res) => {
         }
     }
 
-    const user_status = await userDao.deleteUser(userId)
+    const user_status = await userDao.deleteUser(user_id)
     if (user_status.deletedCount === 1) {
         res.sendStatus(200)
     }

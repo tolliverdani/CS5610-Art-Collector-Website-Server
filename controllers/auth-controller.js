@@ -13,8 +13,6 @@ const authController = (app) => {
 const signup = async (req, res) => {
     // retrieve contents of the body
     const user = req.body;
-    console.log("inside the signup in auth-controller")
-    console.log(JSON.stringify(user, undefined, 4))
 
     // check to see if they are an existing user based on email in mongo
     const existingUser = await userDao.findUserByEmail(user.email);
@@ -28,7 +26,6 @@ const signup = async (req, res) => {
     } else {
 
         const insertedUser = await userDao.createUser(user);
-        console.log("this is the inserted user: " + JSON.stringify(insertedUser,undefined,4))
 
         // check to see if the user already has a collection, which they shouldn't
         const exisitingCollection = await collectionDao.findCollectionById(insertedUser._id);
@@ -38,20 +35,23 @@ const signup = async (req, res) => {
             res.sendStatus(403);
 
         } else {
+
             // if not, add their collection
-            const newCollection = await collectionDao.createCollection({user_id: insertedUser._id})
+            const newCollection = await collectionDao.createCollection(
+                {user_id: insertedUser._id}
+            )
 
             // add attribute to user profile
             insertedUser.collection_id = newCollection._id;
             const status = await userDao.updateUser(insertedUser._id, insertedUser)
 
-            insertedUser.password = '';
-            req.session['profile'] = insertedUser;
             if ( status.modifiedCount !== 1 ) {
                 res.sendStatus(403)
             }
         }
 
+        insertedUser.password = '';
+        req.session['profile'] = insertedUser;
         res.json(insertedUser);
     }
 }
@@ -59,9 +59,9 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     const user = req.body;
     console.log(JSON.stringify(req.body, undefined, 4))
-    console.log("this is the user: " + JSON.stringify(user, undefined, 4))
+
     const existingUser = await userDao.findUserByCredentials(user.email, user.password);
-    console.log("this is the existinguser: " + existingUser)
+
     if (existingUser) {
         existingUser.password = '';
         req.session['profile'] = existingUser;
@@ -78,8 +78,11 @@ const logout = (req, res) => {
 
 const profile = (req, res) => {
     const user = req.session['profile'];
-    if (user) res.json(user);
-    // TODO Jose returns res.sendStatus(403) in an else statement here
+    if (user) {
+        res.json(user);
+    } else {
+        res.sendStatus(403)
+    }
 }
 
 const updateCurrentUserProfile = async (req, res) => {

@@ -42,7 +42,10 @@ const findAllOffers = async (req, res) => {
 
 const createOffer = async (req, res) => {
     const offer = req.body;
-    const offer_to_insert = {...offer, date_created: new Date()}
+    const offer_to_insert = {
+        ...offer,
+        date_created: new Date()
+    }
     const inserted_offer = await offersDao.createOffer(offer_to_insert);
     res.json(inserted_offer);
 }
@@ -92,7 +95,12 @@ const approveOffer = async (req, res) => {
     const listing_id = req.body.listing_id;
 
     // make a duplicate json with the correct attributes
-    const accepted_offer = {...offer, active_offer: false, accepted: true, date_removed: new Date()}
+    const accepted_offer = {
+        ...offer,
+        active_offer: false,
+        accepted: true,
+        date_removed: new Date()
+    }
 
     // try updating the offer
     const update_status = await offersDao.updateOffer(offer_id, accepted_offer)
@@ -132,7 +140,12 @@ const approveOffer = async (req, res) => {
 const rejectOffer = async (req, res) => {
     const offer = req.body;
     const offer_id = req.body._id;
-    const rejected_offer = {...offer, active_offer: false, accepted: false, date_removed: new Date()}
+    const rejected_offer = {
+        ...offer,
+        active_offer: false,
+        accepted: false,
+        date_removed: new Date()
+    }
     const update_status = await offersDao.updateOffer(offer_id, rejected_offer)
     if ( update_status.modifiedCount === 1) {
         res.sendStatus(200)

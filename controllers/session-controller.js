@@ -14,10 +14,12 @@ const setSession = (req, res) => {
 const getSession = (req, res) => {
     const name = req.params['name'];
     const value = req.session[name];
+    console.log(value)
     res.send(value);
 }
 
 const getSessionAll = (req, res) => {
+    console.log(req.session)
     res.send(req.session);
 }
 
