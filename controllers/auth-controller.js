@@ -89,7 +89,7 @@ const updateCurrentUserProfile = async (req, res) => {
     const user = req.body;
     const userId = user._id;
     const status = await userDao.updateUser(userId, user)
-    if (status.acknowledged === true) {
+    if (status.modifiedCount === 1) {
         user.password = ''
         req.session[`profile`] = user;
         res.sendStatus(200)
