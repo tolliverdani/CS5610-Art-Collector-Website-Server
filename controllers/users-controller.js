@@ -41,7 +41,7 @@ const updateUser = async (req, res) => {
     const user = req.body;
     const user_id = user._id;
     const status = await userDao.updateUser(user_id, user)
-    if (status.acknowledged === true) {
+    if (status.modifiedCount === 1) {
         res.sendStatus(200)
     }
 }
