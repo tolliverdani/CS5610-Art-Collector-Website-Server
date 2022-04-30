@@ -58,7 +58,6 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     const user = req.body;
-    console.log(JSON.stringify(req.body, undefined, 4))
 
     const existingUser = await userDao.findUserByCredentials(user.email, user.password);
 
