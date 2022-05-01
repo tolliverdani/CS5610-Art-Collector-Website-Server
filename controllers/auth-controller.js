@@ -78,7 +78,7 @@ const profile = (req, res) => {
     if (user) {
         res.json(user);
     } else {
-        res.sendStatus(403)
+        // don't need to return anything here
     }
 }
 
