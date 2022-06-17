@@ -4,7 +4,6 @@ import session from "express-session";
 import cors from "cors";
 
 import UsersController from "./controllers/users-controller.js";
-//import CollectionController from "./controllers/collection-controller.js";
 import CommentsController from "./controllers/comments-controller.js";
 import WikiArtController from "./controllers/wiki-art-controller.js";
 import SessionController from "./controllers/session-controller.js";
@@ -15,8 +14,7 @@ import ListingsController from "./controllers/listings-controller.js";
 import OffersController from "./controllers/offers-controller.js";
 const app = express();
 
-const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING ||
-    "mongodb+srv://web-dev-project-admin:uxp4pxn-WHF5zge0pcg@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors({
