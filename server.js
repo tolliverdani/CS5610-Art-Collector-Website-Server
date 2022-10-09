@@ -12,10 +12,9 @@ import CollectionsController from "./controllers/collection-controller.js";
 import TransactionsController from "./controllers/transactions-controller.js";
 import ListingsController from "./controllers/listings-controller.js";
 import OffersController from "./controllers/offers-controller.js";
-import {mongo_string} from "./secure.js";
 const app = express();
 
-const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING || mongo_string);
+const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors({
