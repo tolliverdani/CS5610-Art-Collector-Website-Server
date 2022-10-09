@@ -12,9 +12,10 @@ import CollectionsController from "./controllers/collection-controller.js";
 import TransactionsController from "./controllers/transactions-controller.js";
 import ListingsController from "./controllers/listings-controller.js";
 import OffersController from "./controllers/offers-controller.js";
+import {mongo_string} from "./secure.js";
 const app = express();
 
-const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING);
+const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING || mongo_string);
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors({
@@ -38,7 +39,7 @@ app.use(session({
 
     // according to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
-    cookie: { secure: false } // needs HTTPS
+    cookie: { secure: true } // needs HTTPS
 }));
 
 UsersController(app);
