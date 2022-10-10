@@ -42,7 +42,6 @@ app.use(session({
     // according to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
     cookie: { maxAge: oneDay } // needs HTTPS
-    domain: '.netlify.app'
 }));
 
 UsersController(app);
