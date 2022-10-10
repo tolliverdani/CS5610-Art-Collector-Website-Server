@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import express from "express";
 import session from "express-session";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 
 import UsersController from "./controllers/users-controller.js";
 import CommentsController from "./controllers/comments-controller.js";
@@ -24,10 +23,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(cookieParser());
 app.set('trust proxy', 1);
 
-const oneDay = 1000 * 60 * 60 * 24;
 // https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
 // ^^ explains these variables
 app.use(session({
@@ -41,7 +38,7 @@ app.use(session({
 
     // according to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
-    cookie: { maxAge: oneDay } // needs HTTPS
+    cookie: { secure: true } // needs HTTPS
 }));
 
 UsersController(app);
