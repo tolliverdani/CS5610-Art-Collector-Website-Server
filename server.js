@@ -27,10 +27,17 @@ app.set('trust proxy', 1);
 
 // https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
 // ^^ explains these variables
+
+// https://stackoverflow.com/questions/66503751/cross-domain-session-cookie-express-api-on-heroku-react-app-on-netlify
+// ^^ this was also super helpful with getting cookies to work in production
+
+// https://stackoverflow.com/questions/59384430/cookies-only-set-in-chrome-not-set-in-safari-mobile-chrome-or-mobile-safari
+// ^^ this also explains why cookies don't work in Safari
+
 app.use(session({
 
     // I believe this is just to encrypt data
-    secret: process.env.SECRET_KEY || "super secret key",
+    secret: process.env.NODE_ENV === 'production' ? process.env.SECRET_KEY : "super secret key",
 
     // according to GFG, setting this to true "forces the session to be saved back to the session store
     // changing this from true (the default) to false can help prevent race situations
