@@ -14,7 +14,7 @@ import ListingsController from "./controllers/listings-controller.js";
 import OffersController from "./controllers/offers-controller.js";
 const app = express();
 
-const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING || 'mongodb+srv://web-dev-project-admin:vep0tdt-waj.XVX8uht@cluster0.oslvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors({
