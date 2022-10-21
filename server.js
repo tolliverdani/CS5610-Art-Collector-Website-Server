@@ -18,7 +18,7 @@ const CONNECTION_STRING = (process.env.DB_CONNECTION_STRING);
 mongoose.connect(CONNECTION_STRING);
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (process.env.CORS_URL || 'http://localhost:3000'),
     credentials: true
 }));
 
@@ -27,10 +27,17 @@ app.set('trust proxy', 1);
 
 // https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
 // ^^ explains these variables
+
+// https://stackoverflow.com/questions/66503751/cross-domain-session-cookie-express-api-on-heroku-react-app-on-netlify
+// ^^ this was also super helpful with getting cookies to work in production
+
+// https://stackoverflow.com/questions/59384430/cookies-only-set-in-chrome-not-set-in-safari-mobile-chrome-or-mobile-safari
+// ^^ this also explains why cookies don't work in Safari
+
 app.use(session({
 
     // I believe this is just to encrypt data
-    secret: process.env.SECRET_KEY || "super secret key",
+    secret: process.env.NODE_ENV === 'production' ? process.env.SECRET_KEY : "super secret key",
 
     // according to GFG, setting this to true "forces the session to be saved back to the session store
     // changing this from true (the default) to false can help prevent race situations
@@ -38,7 +45,10 @@ app.use(session({
 
     // according to GFG, this forces a session that is "uninitialized" to be saved to the store
     saveUninitialized: true,
-    cookie: { secure: false } // needs HTTPS
+    cookie: {
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production'
+    }
 }));
 
 UsersController(app);
